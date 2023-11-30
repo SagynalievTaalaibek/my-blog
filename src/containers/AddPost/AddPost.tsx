@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { PostFormInput } from '../../types';
+import axiosApiPost from '../../axiosApiPost';
+import Preloader from '../../components/Preloader/Preloader';
+import { PostForm } from '../../types';
 
 const AddPost = () => {
-  const [post, setPost] = useState<PostFormInput>({
+  const [post, setPost] = useState<PostForm>({
     title: '',
     description: '',
-    date: '',
   });
+
+  const [loading, setLoading] = useState(false);
 
   const onChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -17,22 +20,27 @@ const AddPost = () => {
     }));
   };
 
-  const onSubmit = (event: React.FormEvent) => {
+  const onSubmit = async (event: React.FormEvent) => {
+    setLoading(true);
     event.preventDefault();
+
     const today = new Date();
     const dateNow = `${today.getDate()}.${
       today.getMonth() + 1
     }.${today.getFullYear()} ${today.getHours()}:${today.getMinutes()}`;
 
-    setPost((prevState) => ({
-      ...prevState,
-      date: dateNow,
-    }));
+    const postData = { ...post, date: dateNow };
+
+    try {
+      await axiosApiPost.post('posts.json', postData);
+    } finally {
+      setLoading(false);
+      setPost({ title: '', description: '' });
+    }
   };
 
-  return (
+  let form = (
     <form onSubmit={onSubmit}>
-      <h4>Add new post</h4>
       <div className="mb-3">
         <label htmlFor="title" className="form-label">
           Title
@@ -62,6 +70,17 @@ const AddPost = () => {
       </div>
       <button className="btn btn-primary">Save</button>
     </form>
+  );
+
+  if (loading) {
+    form = (<Preloader/>);
+  }
+
+  return (
+    <>
+      <h2>Add new Post</h2>
+      {form}
+    </>
   );
 };
 
