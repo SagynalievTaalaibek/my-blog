@@ -3,8 +3,12 @@ export interface PostForm {
   description: string;
 }
 
-export interface PostHome {
-  id: string;
+export interface Post {
   title: string;
   date: string;
+  description: string;
+}
+
+interface PostList {
+  [id: string]: Post;
 }

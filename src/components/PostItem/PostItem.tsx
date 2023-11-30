@@ -1,20 +1,21 @@
-import { PostHome } from '../../types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 interface Props {
-  post: PostHome;
+  id: string;
+  title: string;
+  date: string;
 }
 
-const PostItem: React.FC<Props> = ({ post }) => {
+const PostItem: React.FC<Props> = ({ title, date, id }) => {
   return (
-    <div className="card">
+    <div className="card mb-2">
       <div className="card-header">
-        <p className="card-text">{post.date}</p>
+        <p className="card-text">{date}</p>
       </div>
       <div className="card-body">
-        <h4 className="card-title">{post.title}</h4>
-        <Link to={'/posts/' + post.id} className="btn btn-primary mt-3">Read more &gt;&gt;</Link>
+        <h4 className="card-title">{title}</h4>
+        <Link to={'/posts/' + id} className="btn btn-primary mt-3">Read more &gt;&gt;</Link>
       </div>
     </div>
   );

@@ -12,8 +12,8 @@ const Navbar = () => {
     <div className="container">
       <nav className="navbar navbar-expand-lg">
         <div className="container-fluid">
-          <a className="navbar-brand" href="/">
-            Posts
+          <a className="navbar-brand" href="/posts">
+            My Blog
           </a>
           <button className="navbar-toggler" type="button" onClick={toggleMenu}>
             <span className="navbar-toggler-icon"></span>
