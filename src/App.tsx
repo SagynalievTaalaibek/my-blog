@@ -1,5 +1,11 @@
+import Navbar from './components/Navbar/Navbar';
+
 const App = () => {
-  return <div>Hello world</div>;
+  return (
+    <header className="bg-body-secondary">
+      <Navbar/>
+    </header>
+  );
 };
 
 export default App;
