@@ -1,8 +1,8 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { PostList } from '../../types';
 import React, { useState } from 'react';
 import Preloader from '../../components/Preloader/Preloader';
 import axiosApiPost from '../../axiosApiPost';
+import { PostList } from '../../types';
 
 interface Props {
   posts: PostList | undefined;

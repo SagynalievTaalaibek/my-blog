@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axiosApiPost from '../../axiosApiPost';
 import Preloader from '../../components/Preloader/Preloader';
 import { PostForm } from '../../types';
 import { useParams } from 'react-router-dom';
 
 const PostForm = () => {
-  const params = useParams();
-
   const [post, setPost] = useState<PostForm>({
     title: '',
     description: '',
   });
   const [loading, setLoading] = useState(false);
+
+  const params = useParams();
 
   const onChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -21,6 +21,27 @@ const PostForm = () => {
       [event.target.name]: event.target.value,
     }));
   };
+
+  const fetchPost = useCallback(async (id: string) => {
+    setLoading(true);
+
+    try {
+      const response = await axiosApiPost.get('posts/' + id + '.json');
+      if (response.data) {
+        setPost(response.data);
+      }
+    } catch (e) {
+      alert('Error' + e);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (params.id) {
+      void fetchPost(params.id);
+    }
+  }, [params.id, fetchPost]);
 
   const onSubmit = async (event: React.FormEvent) => {
     setLoading(true);
@@ -33,11 +54,19 @@ const PostForm = () => {
 
     const postData = { ...post, date: dateNow };
 
-    try {
-      await axiosApiPost.post('posts.json', postData);
-    } finally {
-      setLoading(false);
-      setPost({ title: '', description: '' });
+    if (params.id) {
+      try {
+        await axiosApiPost.put('posts/' + params.id + '.json', postData);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      try {
+        await axiosApiPost.post('posts.json', postData);
+      } finally {
+        setLoading(false);
+        setPost({ title: '', description: '' });
+      }
     }
   };
 
