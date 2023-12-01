@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import axiosApiPost from '../../axiosApiPost';
 import Preloader from '../../components/Preloader/Preloader';
 import { PostForm } from '../../types';
+import { useParams } from 'react-router-dom';
 
-const AddPost = () => {
+const PostForm = () => {
+  const params = useParams();
+
   const [post, setPost] = useState<PostForm>({
     title: '',
     description: '',
   });
-
   const [loading, setLoading] = useState(false);
 
   const onChange = (
@@ -73,15 +75,21 @@ const AddPost = () => {
   );
 
   if (loading) {
-    form = (<Preloader/>);
+    form = <Preloader />;
+  }
+
+  let title = 'Add';
+
+  if (params.id) {
+    title = 'Edit post';
   }
 
   return (
     <>
-      <h2>Add new Post</h2>
+      <h2>{title}</h2>
       {form}
     </>
   );
 };
 
-export default AddPost;
+export default PostForm;

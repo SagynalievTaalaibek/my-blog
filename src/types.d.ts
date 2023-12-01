@@ -9,6 +9,7 @@ export interface Post {
   description: string;
 }
 
-interface PostList {
+export interface PostList {
   [id: string]: Post;
 }
+

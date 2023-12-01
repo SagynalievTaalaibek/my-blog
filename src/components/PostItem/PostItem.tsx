@@ -11,7 +11,7 @@ const PostItem: React.FC<Props> = ({ title, date, id }) => {
   return (
     <div className="card mb-2">
       <div className="card-header">
-        <p className="card-text">{date}</p>
+        <p className="card-text">Created on {date}</p>
       </div>
       <div className="card-body">
         <h4 className="card-title">{title}</h4>
