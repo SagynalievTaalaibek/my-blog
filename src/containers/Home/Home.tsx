@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { PostList } from '../../types';
-import PostItem from '../../components/PostItem/PostItem';
 import axiosApiPost from '../../axiosApiPost';
+import PostItem from '../../components/PostItem/PostItem';
 import Preloader from '../../components/Preloader/Preloader';
+import { PostList } from '../../types';
 
 interface Props {
   addPost: (newPost: PostList) => void;
 }
 
-const Home: React.FC<Props> = ({addPost}) => {
+const Home: React.FC<Props> = ({ addPost }) => {
   const [posts, setPosts] = useState<PostList>();
   const [loading, setLoading] = useState(false);
 
@@ -37,8 +37,6 @@ const Home: React.FC<Props> = ({addPost}) => {
       addPost(posts);
     }
   }, [posts, addPost]);
-
-
 
   return (
     <div>

@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import axiosApiPost from '../../axiosApiPost';
 import Preloader from '../../components/Preloader/Preloader';
 import { PostForm } from '../../types';
-import { useParams } from 'react-router-dom';
 
 const PostForm = () => {
   const [post, setPost] = useState<PostForm>({
@@ -10,8 +10,8 @@ const PostForm = () => {
     description: '',
   });
   const [loading, setLoading] = useState(false);
-
   const params = useParams();
+  const navigate = useNavigate();
 
   const onChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -26,7 +26,9 @@ const PostForm = () => {
     setLoading(true);
 
     try {
-      const response = await axiosApiPost.get('posts/' + id + '.json');
+      const response = await axiosApiPost.get<PostForm>(
+        'posts/' + id + '.json',
+      );
       if (response.data) {
         setPost(response.data);
       }
@@ -54,19 +56,15 @@ const PostForm = () => {
 
     const postData = { ...post, date: dateNow };
 
-    if (params.id) {
-      try {
+    try {
+      if (params.id) {
         await axiosApiPost.put('posts/' + params.id + '.json', postData);
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      try {
+      } else {
         await axiosApiPost.post('posts.json', postData);
-      } finally {
-        setLoading(false);
-        setPost({ title: '', description: '' });
       }
+    } finally {
+      setLoading(false);
+      navigate('/');
     }
   };
 
@@ -120,5 +118,4 @@ const PostForm = () => {
     </>
   );
 };
-
 export default PostForm;

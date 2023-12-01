@@ -1,7 +1,7 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import React, { useState } from 'react';
-import Preloader from '../../components/Preloader/Preloader';
 import axiosApiPost from '../../axiosApiPost';
+import Preloader from '../../components/Preloader/Preloader';
 import { PostList } from '../../types';
 
 interface Props {
@@ -43,10 +43,7 @@ const Post: React.FC<Props> = ({ posts }) => {
               <button className="btn btn-danger me-3" onClick={deletePost}>
                 Delete
               </button>
-              <Link
-                to={`/posts/${params.id}/edit`}
-                className="btn btn-primary"
-              >
+              <Link to={`/posts/${params.id}/edit`} className="btn btn-primary">
                 Edit
               </Link>
             </div>
@@ -57,10 +54,8 @@ const Post: React.FC<Props> = ({ posts }) => {
     return null;
   };
 
-
   return (
     <>
-      <h3>Post</h3>
       {postCard()}
       {loading && <Preloader />}
     </>
